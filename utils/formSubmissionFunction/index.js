@@ -97,7 +97,7 @@ const formSubmissionFunction = async (formData) => {
                 const geoMap = await getKmlFile(airtableData.map, airtableData['current-location'], data);
                 airtableData["Geo Map"] =  geoMap.attachmentArray
                 airtableData["Kml File"] = geoMap.attachmentArray[0].url;
-                airtableData["Field Survey Area"] = geoMap.fieldSurveyArea;
+                // airtableData["Field Survey Area"] = geoMap.fieldSurveyArea;
              }
             if(airtableData["current-location"]){
                 airtableData["current-location"] = airtableData["current-location"].replace(/ /g, ', ');
@@ -196,9 +196,9 @@ const getKmlFile = async(map, currentLocation, data) => {
     const response = await axios.post(apiurl, Data, config);
         console.log('response', response.data)
         const url = response.data.url;
-        const fieldSurveyArea = response.data.fieldSurveyArea.Area;
+        // const fieldSurveyArea = response.data.fieldSurveyArea.Area;
         const attachmentArray = [{ url : url }]
-        return {attachmentArray, fieldSurveyArea};
+        return {attachmentArray};
     }
     catch(err){
         console.log('err', err)
