@@ -1,10 +1,10 @@
-const { SchaefflerStep3Function } = require("../utils/SchaefflerStep3Data");
+const { IMPCASaplingMonitoringAfter2_3DaysFunction } = require("../utils/IMPCASaplingMonitoringAfter2_3DaysData");
 const axios = require("axios");
 
 module.exports = async function (context, req) {
   const formData = req.body;
   try {
-    const response = await SchaefflerStep3Function(formData);
+    const response = await IMPCASaplingMonitoringAfter2_3DaysFunction(formData);
     context.res = {
       status: 200,
       body: response,
@@ -13,7 +13,7 @@ module.exports = async function (context, req) {
     context.log("Erorrrrrr", error);
 
     const data = {
-      text: `Error in Schaeffler(स्वास्थ्यज्योति: उन्नत चूल्हे, सशक्त महिलाएं) Step 3 Form submissionId ${formData.submissionId}, form ${formData.xmlFormId} instance Id - "${formData.instanceId}", created at - "${formData.createdAt}"  \n Error: ${error} `,
+      text: `Error in IMPCA Sapling Monitoring After 2 3 Days Form submissionId ${formData.submissionId}, form ${formData.xmlFormId} instance Id - "${formData.instanceId}", created at - "${formData.createdAt}"  \n Error: ${error} `,
     };
 
     const options = {

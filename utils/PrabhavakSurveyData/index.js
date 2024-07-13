@@ -8,7 +8,7 @@ const parser = new XMLParser();
 const Url = "https://odk.anaxee.com/v1/projects/";
 
 
-const IMPCASaplingDropFunction = async (formData) => {
+const PrabhavakSurveyFunction = async (formData) => {
     try {
         if(!formData.data || formData.data === "" || formData.data === null || formData.data === undefined){
             console.log("in if condition");
@@ -32,26 +32,16 @@ const IMPCASaplingDropFunction = async (formData) => {
             // console.log('jsonData------------------', jsonData)
             const parsedData = jsonData.data;
             // console.log('parsedData', parsedData);
-            if(parsedData.Photos_of_plants_after_unloading_count === 1){
-                const Photos_of_plants_after_unloading = parsedData.Photos_of_plants_after_unloading;
-                for(const key in Photos_of_plants_after_unloading){
-                    parsedData.Photos_of_plants_after_unloading[`1_${key}`] = Photos_of_plants_after_unloading[key];
-                    delete parsedData.Photos_of_plants_after_unloading[key];
+            if(parsedData.Group_Details_count === 1){
+                const Group_Details = parsedData.Group_Details;
+                for(const key in Group_Details){
+                    parsedData.Group_Details[`1_${key}`] = Group_Details[key];
+                    delete parsedData.Group_Details[key];
                 }
-            }    
-
-
-            if(parsedData.Extra_Photos_count === 1){
-                const Extra_Photos = parsedData.Extra_Photos;
-                for(const key in Extra_Photos){
-                    parsedData.Extra_Photos[`1_${key}`] = Extra_Photos[key];
-                    delete parsedData.Extra_Photos[key];
-                }
-            }
+            } 
 
             const finalParsedData = flattenObject(parsedData);
-            delete finalParsedData.Photos_of_plants_after_unloading_count;
-            delete finalParsedData.Extra_Photos_count;
+            delete finalParsedData.Group_Details_count;
             
 
             // finalParsedData["Which_Brands_of_Seeds_Pesticides_etc_you_purchase_for_mentioned_crops"] = finalParsedData["Which_Brands_of_Seeds_Pesticides_etc_you_purchase_for_mentioned_crops"].toString();
@@ -84,29 +74,27 @@ const IMPCASaplingDropFunction = async (formData) => {
                     }
                 }       
             }
-            if(airtableData["Gps Location"]){
-                airtableData["Gps Location"] = airtableData["Gps Location"].replace(/ /g, ', ');
-                airtableData["Gps Location"] = `${airtableData["Gps Location"].split(", ")[0]},${airtableData["Gps Location"].split(", ")[1]}`;
+            if(airtableData["GPS Location"]){
+                airtableData["GPS Location"] = airtableData["GPS Location"].replace(/ /g, ', ');
+                airtableData["GPS Location"] = `${airtableData["GPS Location"].split(", ")[0]},${airtableData["GPS Location"].split(", ")[1]}`;
             }
             if(finalParsedData.Filled_by_Email){
                 airtableData["Filled by Email"] = airtableData["Filled by Email"].replace(/&#64;/g, '@');
             }
-            if(airtableData["Tractor Arriving Time at the plantation site"]){
-                airtableData["Tractor Arriving Time at the plantation site"] = airtableData["Tractor Arriving Time at the plantation site"].split(':00')[0];
-            }
+            
             const runnerData = {
                 formId: submissionId,
                 createdTime: createdAt,
-                projectName: "IMPCA Sapling Delivery Drop Tracking Survey",
+                projectName: "IMPCA - Sapling Dispatch Tracking",
                 runner: airtableData["Filled by name"],
                 number : airtableData["Filled by number"],
-                districtName: airtableData["District"],
-                stateName: airtableData["State"],
+                districtName: "District",
+                stateName: "State",
                 //extract lat long from GPS Location 22.7535275, 75.8654391, 520.4000244140625, 14.962
-                GPS_Location: airtableData["Gps Location"],
+                GPS_Location: airtableData["GPS Location"],
                 Form_Filled_time: airtableData["Filled Time"],
                 odkProjectId: ProjectId,
-                table_name: "impca_sapling_delivery_drop_data"
+                table_name: "prabhavak_survey_data"
             }
             
             airtableData['FormId'] = submissionId;
@@ -200,4 +188,4 @@ const getFormDataFromXML = async(formData) => {
 };
 
 
-module.exports = { IMPCASaplingDropFunction };
+module.exports = { PrabhavakSurveyFunction };

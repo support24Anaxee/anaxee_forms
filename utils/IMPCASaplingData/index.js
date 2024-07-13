@@ -32,22 +32,32 @@ const IMPCASaplingFunction = async (formData) => {
             // console.log('jsonData------------------', jsonData)
             const parsedData = jsonData.data;
             // console.log('parsedData', parsedData);
-            if(typeof parsedData.Plant_Record_Images === 'object' && parsedData.Plant_Record_Images !== null && !Array.isArray(parsedData.Plant_Record_Images)){
+            if(parsedData.Plant_Record_Images_count === 1){
                 const Plant_Record_Images = parsedData.Plant_Record_Images;
                 for(const key in Plant_Record_Images){
                     parsedData.Plant_Record_Images[`1_${key}`] = Plant_Record_Images[key];
                     delete parsedData.Plant_Record_Images[key];
                 }
             }
-            if(typeof parsedData.Site_Images === 'object' && parsedData.Site_Images !== null && !Array.isArray(parsedData.Site_Images)){
+            if(parsedData.Site_Images_count === 1){
                 const Site_Images = parsedData.Site_Images;
                 for(const key in Site_Images){
                     parsedData.Site_Images[`1_${key}`] = Site_Images[key];
                     delete parsedData.Site_Images[key];
                 }
-            }            
+            }      
+            if(parsedData.Sample_Plant_Count_count === 1){
+                const Sample_Plant_Count = parsedData.Sample_Plant_Count;
+                for(const key in Sample_Plant_Count){
+                    parsedData.Sample_Plant_Count[`1_${key}`] = Sample_Plant_Count[key];
+                    delete parsedData.Sample_Plant_Count[key];
+                }
+            }      
 
             const finalParsedData = flattenObject(parsedData);
+            delete finalParsedData.Sample_Plant_Count_count;
+            delete finalParsedData.Plant_Record_Images_count;
+            delete finalParsedData.Site_Images_count;
             
 
             // finalParsedData["Which_Brands_of_Seeds_Pesticides_etc_you_purchase_for_mentioned_crops"] = finalParsedData["Which_Brands_of_Seeds_Pesticides_etc_you_purchase_for_mentioned_crops"].toString();
@@ -96,8 +106,8 @@ const IMPCASaplingFunction = async (formData) => {
                 projectName: "IMPCA - Sapling Dispatch Tracking",
                 runner: airtableData["Filled by name"],
                 number : airtableData["Filled by number"],
-                districtName: airtableData["District Name"],
-                stateName: airtableData["State Name"],
+                districtName: airtableData["District"],
+                stateName: airtableData["State"],
                 //extract lat long from GPS Location 22.7535275, 75.8654391, 520.4000244140625, 14.962
                 GPS_Location: airtableData["Gps Location"],
                 Form_Filled_time: airtableData["Filled Time"],

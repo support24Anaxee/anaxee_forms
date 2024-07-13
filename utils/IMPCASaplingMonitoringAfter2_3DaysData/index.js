@@ -8,7 +8,7 @@ const parser = new XMLParser();
 const Url = "https://odk.anaxee.com/v1/projects/";
 
 
-const IMPCASaplingDropFunction = async (formData) => {
+const IMPCASaplingMonitoringAfter2_3DaysFunction = async (formData) => {
     try {
         if(!formData.data || formData.data === "" || formData.data === null || formData.data === undefined){
             console.log("in if condition");
@@ -32,26 +32,17 @@ const IMPCASaplingDropFunction = async (formData) => {
             // console.log('jsonData------------------', jsonData)
             const parsedData = jsonData.data;
             // console.log('parsedData', parsedData);
-            if(parsedData.Photos_of_plants_after_unloading_count === 1){
-                const Photos_of_plants_after_unloading = parsedData.Photos_of_plants_after_unloading;
-                for(const key in Photos_of_plants_after_unloading){
-                    parsedData.Photos_of_plants_after_unloading[`1_${key}`] = Photos_of_plants_after_unloading[key];
-                    delete parsedData.Photos_of_plants_after_unloading[key];
+            if(parsedData.Bund_Plantatation_Images_count === 1){
+                const Bund_Plantatation_Images = parsedData.Bund_Plantatation_Images;
+                for(const key in Bund_Plantatation_Images){
+                    parsedData.Bund_Plantatation_Images[`1_${key}`] = Bund_Plantatation_Images[key];
+                    delete parsedData.Bund_Plantatation_Images[key];
                 }
-            }    
-
-
-            if(parsedData.Extra_Photos_count === 1){
-                const Extra_Photos = parsedData.Extra_Photos;
-                for(const key in Extra_Photos){
-                    parsedData.Extra_Photos[`1_${key}`] = Extra_Photos[key];
-                    delete parsedData.Extra_Photos[key];
-                }
-            }
+            }  
 
             const finalParsedData = flattenObject(parsedData);
-            delete finalParsedData.Photos_of_plants_after_unloading_count;
-            delete finalParsedData.Extra_Photos_count;
+            delete finalParsedData.Bund_Plantatation_Images_count;
+            delete finalParsedData.Other_Question_count;
             
 
             // finalParsedData["Which_Brands_of_Seeds_Pesticides_etc_you_purchase_for_mentioned_crops"] = finalParsedData["Which_Brands_of_Seeds_Pesticides_etc_you_purchase_for_mentioned_crops"].toString();
@@ -91,13 +82,10 @@ const IMPCASaplingDropFunction = async (formData) => {
             if(finalParsedData.Filled_by_Email){
                 airtableData["Filled by Email"] = airtableData["Filled by Email"].replace(/&#64;/g, '@');
             }
-            if(airtableData["Tractor Arriving Time at the plantation site"]){
-                airtableData["Tractor Arriving Time at the plantation site"] = airtableData["Tractor Arriving Time at the plantation site"].split(':00')[0];
-            }
             const runnerData = {
                 formId: submissionId,
                 createdTime: createdAt,
-                projectName: "IMPCA Sapling Delivery Drop Tracking Survey",
+                projectName: "IMPCA - Plantation Monitoring After 2-3 Days",
                 runner: airtableData["Filled by name"],
                 number : airtableData["Filled by number"],
                 districtName: airtableData["District"],
@@ -106,7 +94,7 @@ const IMPCASaplingDropFunction = async (formData) => {
                 GPS_Location: airtableData["Gps Location"],
                 Form_Filled_time: airtableData["Filled Time"],
                 odkProjectId: ProjectId,
-                table_name: "impca_sapling_delivery_drop_data"
+                table_name: "impca_sapling_monitoring_after_2_3_days_data"
             }
             
             airtableData['FormId'] = submissionId;
@@ -200,4 +188,4 @@ const getFormDataFromXML = async(formData) => {
 };
 
 
-module.exports = { IMPCASaplingDropFunction };
+module.exports = { IMPCASaplingMonitoringAfter2_3DaysFunction };

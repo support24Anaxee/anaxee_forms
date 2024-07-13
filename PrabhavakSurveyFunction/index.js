@@ -1,10 +1,10 @@
-const { SchaefflerStep3Function } = require("../utils/SchaefflerStep3Data");
+const { PrabhavakSurveyFunction } = require("../utils/PrabhavakSurveyData");
 const axios = require("axios");
 
 module.exports = async function (context, req) {
   const formData = req.body;
   try {
-    const response = await SchaefflerStep3Function(formData);
+    const response = await PrabhavakSurveyFunction(formData);
     context.res = {
       status: 200,
       body: response,
@@ -13,7 +13,7 @@ module.exports = async function (context, req) {
     context.log("Erorrrrrr", error);
 
     const data = {
-      text: `Error in Schaeffler(स्वास्थ्यज्योति: उन्नत चूल्हे, सशक्त महिलाएं) Step 3 Form submissionId ${formData.submissionId}, form ${formData.xmlFormId} instance Id - "${formData.instanceId}", created at - "${formData.createdAt}"  \n Error: ${error} `,
+      text: `Error in Prabhavak Survey Form submissionId ${formData.submissionId}, form ${formData.xmlFormId} instance Id - "${formData.instanceId}", created at - "${formData.createdAt}"  \n Error: ${error} `,
     };
 
     const options = {

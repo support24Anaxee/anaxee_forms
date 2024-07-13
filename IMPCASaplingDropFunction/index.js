@@ -24,7 +24,7 @@ module.exports = async function (context, req) {
 
     axios
       .post(
-        "https://hooks.slack.com/services/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",
+        "https://hooks.slack.com/services/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",
         data,
         options
       )
